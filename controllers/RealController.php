@@ -4,6 +4,7 @@ require_once "bdd/DAO.php";
 
 class RealController
 {
+  // méthode pour afficher une liste des réalisateurs
   public function findAll()
   {
     $dao = new DAO();
@@ -13,15 +14,16 @@ class RealController
     require "views/realisateur/listRealisateurs.php";
   }
 
+  // méthode pour récuperer les informations d'un réalisateur à l'aide de l'id
   public function findOneById($id, $edit = false)
   {
     $dao = new DAO();
-    $sql = "SELECT r.id_realisateur, concat(r.prenom,' ',r.nom) AS nom, sexe, dateNaissance
+    $sql = "SELECT r.id_realisateur, concat(r.prenom,' ',r.nom) AS nom, sexe, dateNaissance, prenom, nom
     FROM realisateur r
     WHERE r.id_realisateur = :id";
     $realisateur = $dao->executerRequete($sql, [":id" => $id]);
 
-    // filmographie
+    // filmographie du réalisateur
     $sql2 = "SELECT r.id_realisateur, f.titre AS titre
     FROM realisateur r
     INNER JOIN film f
@@ -34,17 +36,19 @@ class RealController
     } else {
       return $realisateur;
     }
-    // ajouter un if avec $edit=false pour afficher ou non la vue
   }
+  // ajouter un if avec $edit=false pour afficher ou non la vue "detailReal.php"
+  // sinon on aura la vue en double puisqu'elle sera demandée par findOneById() 
+  // et par une autre méthode comme par ex. modifierRealisateurForm()
 
-  // la requête ne fonctionne pas lorsque le réalisateur n'a pas de film associé
-  // faire deux requêtes différentes pour séparer les infos et les films
 
+  // méthode pour afficher un formulaire pour ajouter un réalisateur
   public function addRealForm()
   {
     require "views/realisateur/ajouterRealForm.php";
   }
 
+  // méthode qui va traiter les entrées du formulaire de la vue "ajouterRealForm.php"
   public function addReal($array)
   {
     $dao = new DAO();
@@ -59,6 +63,7 @@ class RealController
     require "views/realisateur/ajouterRealisateur.php";
   }
 
+  // méthode pour supprimer un réalisateur 
   public function deleteOneById($id)
   {
     $dao = new DAO();
@@ -68,29 +73,34 @@ class RealController
     require "views/realisateur/effacerRealisateur.php";
   }
 
-  // modifierRealisateurForm
+  // méthode qui va afficher un formulaire (pour modifier les informations d'un réalisateur)
   public function modifierRealisateurForm($id)
   {
-    $director = $this->findOneById($id, true);
+    $realisateur = $this->findOneById($id, true);
     require "views/realisateur/editReal.php";
   }
 
+  // méthode qui va traiter les entrées du formulaire de la vue "editReal.php"
   public function editRealisateur($id, $array)
   {
     $nom_realisateeur = filter_var($array["nom_realisateur"], FILTER_SANITIZE_STRING);
-    $prenom_realisateeur = filter_var($array["nom_realisateur"], FILTER_SANITIZE_STRING);
-    $sexe = filter_var($array["nom_realisateur"], FILTER_SANITIZE_STRING);
-    $dateNaissance = filter_var($array["nom_realisateur"], FILTER_SANITIZE_STRING);
+    $prenom_realisateeur = filter_var($array["prenom_realisateur"], FILTER_SANITIZE_STRING);
+    $sexe = filter_var($array["sexe"], FILTER_SANITIZE_STRING);
+    $dateNaissance = filter_var($array["dateNaissance"], FILTER_SANITIZE_STRING);
 
     $dao = new DAO();
     $sql = "UPDATE realisateur
     SET nom = :nom,
     prenom = :prenom,
+    sexe = :sexe,
+    dateNaissance = :dateNaissance
     WHERE id_realisateur = :id";
     $dao->executerRequete($sql, [
       ":id" => $id,
       ":nom" => $nom_realisateeur,
-      ":prenom" => $prenom_realisateeur
+      ":prenom" => $prenom_realisateeur,
+      ":sexe" => $sexe,
+      ":dateNaissance" => $dateNaissance
     ]);
     header("Location:index.php?action=listRealisateurs");
   }

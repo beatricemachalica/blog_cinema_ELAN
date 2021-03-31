@@ -23,7 +23,7 @@ ob_start();
     <div class="form-group">
       <label for="dateNaissance réalisateur">Date de naissance</label>
       <input type="text" class="form-control" id="dateNaissance" name="dateNaissance" placeholder="1998-01-31">
-      <small id="dateNaissanceHelp" class="form-text text-muted">Ajouter la date de naissance au format AAAA-MM-JJ.</small>
+      <small id="dateNaissanceHelp" class="form-text text-muted">Ajoutez la date de naissance au format AAAA-MM-JJ.</small>
     </div>
     <div class="form-check">
       <input type="checkbox" class="form-check-input" id="exampleCheck1">

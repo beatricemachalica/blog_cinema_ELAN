@@ -33,6 +33,7 @@ class ActeurController
   public function addOneActeur($array)
   {
     $dao = new DAO();
+    // corriger le code ci-dessous
     $sql = "INSERT INTO realisateur(nom_realisateur, prenom, sexe)
     VALUES (:nom, :prenom, :sexe)";
     $nom_realisateur = filter_var($array['nom_realisateur'], FILTER_SANITIZE_STRING);
@@ -41,6 +42,7 @@ class ActeurController
     require "views/acteur/ajouterActeur.php";
   }
 
+  // corriger le code ci-dessous
   public function modifierRealForm($id)
   {
     $realisateur = $this->findOneById($id, TRUE);
@@ -49,9 +51,7 @@ class ActeurController
 
   public function editReal($id, $array)
   {
-    // filtrer les variables du formulaire
-    // faire un update
-    // require views/... ou header location
+    // à completer
     header("Location:index.php?action=listRealisateurs");
   }
 }

@@ -22,12 +22,15 @@ ob_start();
       echo "<tr><td><a style='color:white' href='index.php?action=detailReal&id=" .
         $realisateur['id_realisateur'] . "'>" . $realisateur['identiteRealisateur'] . "</a></td>";
       echo "<td>" . $realisateur["sexe"] . "</td>";
-      echo "<td>" . $realisateur["dateNaissance"] . "</td></tr>";
+      echo "<td>" . $realisateur["dateNaissance"] . "</td>";
+      echo "<td><a class='badge badge-danger' href='index.php?action=effacerRealisateur&id=" . $realisateur['id_realisateur'] . "'>x</a></td></tr>";
     }
     ?>
   </tbody>
 </table>
-<a class="btn btn-dark" href="index.php?action=ajouterRealForm">Ajouter un réalisateur</a>
+<a class="btn btn-primary" href="index.php?action=ajouterRealForm">Ajouter un réalisateur</a>
+<!-- autre possibilité : un bouton pour supprimer un réalisateur -->
+<!-- <a class="btn btn-danger" href="#">Effacer un réalisateur</a> -->
 <?php
 
 $realisateurs->closeCursor();

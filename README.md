@@ -9,13 +9,15 @@ c'est pour cela que nous avons pu nous faire la main sur Bootstrap lors de la r�
 
 Fonctionnalités :
 
-- faire apparaitre les listes des films, acteurs et réalisateurs à partir d'une BDD ;
+- faire apparaitre les listes des films, acteurs et réalisateurs à l'aide d'une BDD ;
 - ajouter un réalisateur à l'aide d'un formulaire en respectant les normes de sécurité ;
 - ajouter un acteur à l'aide d'un formulaire en respectant les normes de sécurité (en cours de réalisation) ;
 - ajouter un genre de film à l'aide d'un formulaire en respectant les normes de sécurité (en cours de réalisation) ;
 - ajouter un film à l'aide d'un formulaire en respectant les normes de sécurité (en cours de réalisation) ;
 - création d'un compte utilisateur à l'aide d'un formulaire en respectant les normes de sécurité (en cours de réalisation) ;
-- connexion sécurisé à un compte utilisateur (en cours de réalisation) ;
+- connexion sécurisée à un compte utilisateur (en cours de réalisation) ;
+
+Formateurs : Stéphane SMAIL and Gilles MUESS.
 
 Information sur le theme utilisé de Bootstrap ci desous :
 

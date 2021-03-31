@@ -16,7 +16,7 @@ class ActeurController
   public function findOneById($id)
   {
     $dao = new DAO();
-    $sql = "SELECT a.id_acteur, concat(prenom, ' ', nom) as nomActeur, sexe, dateNaissance, GROUP_CONCAT(f.titre ORDER BY f.titre SEPARATOR ', ') AS titre
+    $sql = "SELECT a.id_acteur, concat(prenom, ' ', nom) as nomActeur, sexe, dateNaissance, GROUP_CONCAT(f.titre ORDER BY f.titre SEPARATOR ', ') AS titre, a.imgPath AS imgPath
     FROM acteur a
     LEFT JOIN casting c ON c.id_acteur = a.id_acteur
     LEFT JOIN film f ON f.id_film = c.id_film

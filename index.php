@@ -26,9 +26,6 @@ if (isset($_GET['action'])) {
     case "listFilms":
       $ctrlFilm->filmsList();
       break;
-    case "detailReal":
-      $ctrlReal->findOneById($id);
-      break;
     case "detailFilm":
       $ctrlFilm->findOneById($id);
       break;
@@ -47,11 +44,17 @@ if (isset($_GET['action'])) {
     case "ajouterRealisateur":
       $ctrlReal->addReal($_POST);
       break;
+    case "effacerRealisateur":
+      $ctrlReal->deleteOneById($id);
+      break;
     case "editRealForm":
       $ctrlReal->modifierRealisateurForm($id);
       break;
     case "modifierRealisateur":
       $ctrlReal->editRealisateur($_POST, $id);
+      break;
+    case "detailReal":
+      $ctrlReal->findOneById($id);
       break;
   }
 } else {

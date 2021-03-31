@@ -44,6 +44,16 @@ class RealController
     require "views/realisateur/ajouterRealisateur.php";
   }
 
+  public function deleteOneById($id)
+  {
+    $dao = new DAO();
+    $sql = "DELETE FROM realisateur
+    WHERE id_realisateur = :id";
+    $realisateur = $dao->executerRequete($sql, [":id" => $id]);
+    require "views/realisateur/effacerRealisateur.php";
+  }
+
+
   public function modifierRealisateurForm($id)
   {
     $realisateur = $this->findOneById($id, true);

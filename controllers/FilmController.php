@@ -28,7 +28,7 @@ class FilmController
   public function findOneById($id)
   {
     $dao = new DAO();
-    $sql = "SELECT id_film, f.titre AS titre, f.noteFilm AS note, f.dateSortie, TIME_FORMAT(SEC_TO_TIME(f.duree*60), '%Hh%i') AS duree, f.id_realisateur AS idReal, concat(r.prenom,' ',r.nom) AS nomReal, resume AS resumeFilm, imgPath
+    $sql = "SELECT id_film, f.titre AS titre, f.noteFilm AS note, f.dateSortie, TIME_FORMAT(SEC_TO_TIME(f.duree*60), '%Hh%i') AS duree, f.id_realisateur AS idReal, concat(r.prenom,' ',r.nom) AS nomReal, resume AS resumeFilm, f.imgPath
     FROM film f
     INNER JOIN realisateur r
     ON r.id_realisateur = f.id_realisateur
@@ -37,7 +37,7 @@ class FilmController
 
     // le casting du film
 
-    $sql2 = "SELECT f.titre AS titre, imgPath, CONCAT(a.prenom, ' ',a.nom) AS identiteActeur, r.role AS roleActeur, a.sexe, a.dateNaissance, a.id_acteur AS idActeur
+    $sql2 = "SELECT f.titre AS titre, f.imgPath, CONCAT(a.prenom, ' ',a.nom) AS identiteActeur, r.role AS roleActeur, a.sexe, a.dateNaissance, a.id_acteur AS idActeur
     FROM film f
     INNER JOIN casting c
     ON c.id_film = f.id_film

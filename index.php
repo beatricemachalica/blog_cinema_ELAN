@@ -47,7 +47,7 @@ if (isset($_GET['action'])) {
     case "effacerRealisateur":
       $ctrlReal->deleteOneById($id);
       break;
-    case "editRealForm":
+    case "modifierRealForm":
       $ctrlReal->modifierRealisateurForm($id);
       break;
     case "modifierRealisateur":

@@ -7,19 +7,27 @@ Exercice de templating et de design pattern.
 Nous nous sommes focalisés sur le back-end pour cet exercice,
 c'est pour cela que nous avons pu nous faire la main sur Bootstrap lors de la réalisation de ce petit projet.
 
-Fonctionnalités :
+### Fonctionnalités :
 
 - faire apparaitre les listes des films, acteurs et réalisateurs à l'aide d'une BDD ;
 - ajouter un réalisateur à l'aide d'un formulaire en respectant les normes de sécurité ;
+- modifier les informations d'un réalisateur ;
+- supprimer un réalisateurs ;
 - ajouter un acteur à l'aide d'un formulaire en respectant les normes de sécurité (en cours de réalisation) ;
 - ajouter un genre de film à l'aide d'un formulaire en respectant les normes de sécurité (en cours de réalisation) ;
 - ajouter un film à l'aide d'un formulaire en respectant les normes de sécurité (en cours de réalisation) ;
 - création d'un compte utilisateur à l'aide d'un formulaire en respectant les normes de sécurité (en cours de réalisation) ;
 - connexion sécurisée à un compte utilisateur (en cours de réalisation) ;
 
+### Sécurité :
+
+- requetes préparées et filtration des inputs
+- protection contre les failles XSS
+- protection contre les injections SQL
+
 Formateurs : Stéphane SMAIL and Gilles MUESS.
 
-Information sur le theme utilisé de Bootstrap ci desous :
+Information sur le theme utilisé de Bootstrap ci-desous :
 
 [Start Bootstrap - Clean Blog](https://startbootstrap.com/theme/clean-blog/)
 

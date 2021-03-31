@@ -7,23 +7,38 @@ class RealController
   public function findAll()
   {
     $dao = new DAO();
-    $sql = "SELECT id_realisateur, concat(prenom, ' ', nom) AS identiteRealisateur, sexe, dateNaissance
+    $sql = "SELECT id_realisateur, concat(prenom, ' ', nom) AS identiteRealisateur, sexe, dateNaissance, YEAR(CURRENT_TIMESTAMP) - YEAR(dateNaissance) AS age
     FROM realisateur";
     $realisateurs = $dao->executerRequete($sql);
     require "views/realisateur/listRealisateurs.php";
   }
 
-  public function findOneById($id)
+  public function findOneById($id, $edit = false)
   {
     $dao = new DAO();
-    $sql = "SELECT r.id_realisateur, concat(r.prenom,' ',r.nom) AS nom, sexe, dateNaissance, f.titre AS titre
+    $sql = "SELECT r.id_realisateur, concat(r.prenom,' ',r.nom) AS nom, sexe, dateNaissance
+    FROM realisateur r
+    WHERE r.id_realisateur = :id";
+    $realisateur = $dao->executerRequete($sql, [":id" => $id]);
+
+    // filmographie
+    $sql2 = "SELECT r.id_realisateur, f.titre AS titre
     FROM realisateur r
     INNER JOIN film f
     ON f.id_realisateur = r.id_realisateur
     WHERE r.id_realisateur = :id";
-    $realisateur = $dao->executerRequete($sql, [":id" => $id]);
-    require "views/realisateur/detailReal.php";
+    $filmographie = $dao->executerRequete($sql2, [":id" => $id]);
+
+    if (!$edit) {
+      require "views/realisateur/detailReal.php";
+    } else {
+      return $realisateur;
+    }
+    // ajouter un if avec $edit=false pour afficher ou non la vue
   }
+
+  // la requête ne fonctionne pas lorsque le réalisateur n'a pas de film associé
+  // faire deux requêtes différentes pour séparer les infos et les films
 
   public function addRealForm()
   {
@@ -53,24 +68,30 @@ class RealController
     require "views/realisateur/effacerRealisateur.php";
   }
 
-
+  // modifierRealisateurForm
   public function modifierRealisateurForm($id)
   {
-    $realisateur = $this->findOneById($id, true);
+    $director = $this->findOneById($id, true);
     require "views/realisateur/editReal.php";
-    // pourquoi nous avons un true en paramètre ?
   }
 
   public function editRealisateur($id, $array)
   {
-    // filtrer les variables du formulaire
-    // faire un update
-    // require views/... ou header location
+    $nom_realisateeur = filter_var($array["nom_realisateur"], FILTER_SANITIZE_STRING);
+    $prenom_realisateeur = filter_var($array["nom_realisateur"], FILTER_SANITIZE_STRING);
+    $sexe = filter_var($array["nom_realisateur"], FILTER_SANITIZE_STRING);
+    $dateNaissance = filter_var($array["nom_realisateur"], FILTER_SANITIZE_STRING);
+
+    $dao = new DAO();
+    $sql = "UPDATE realisateur
+    SET nom = :nom,
+    prenom = :prenom,
+    WHERE id_realisateur = :id";
+    $dao->executerRequete($sql, [
+      ":id" => $id,
+      ":nom" => $nom_realisateeur,
+      ":prenom" => $prenom_realisateeur
+    ]);
     header("Location:index.php?action=listRealisateurs");
   }
 }
-// fonctionnalités à ajouter par la suite :
-// pouvoir ajouter des réalisateurs
-// pouvoir ajouter des acteurs
-// pouvoir ajouter des genres (non prioritaire)
-// pouvoir ajouter des films (attention, à la fin car il faut les relier dans le bdd)

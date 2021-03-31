@@ -7,7 +7,7 @@ class ActeurController
   public function findAll()
   {
     $dao = new DAO();
-    $sql = "SELECT id_acteur, concat(prenom, ' ', nom) as nomActeur, sexe, dateNaissance
+    $sql = "SELECT id_acteur, concat(prenom, ' ', nom) as nomActeur, sexe, dateNaissance, YEAR(CURRENT_TIMESTAMP) - YEAR(dateNaissance) AS age
     FROM acteur";
     $acteurs = $dao->executerRequete($sql);
     require "views/acteur/listActeurs.php";
@@ -55,8 +55,3 @@ class ActeurController
     header("Location:index.php?action=listRealisateurs");
   }
 }
-// fonctionnalités à ajouter par la suite :
-// pouvoir ajouter des réalisateurs
-// pouvoir ajouter des acteurs
-// pouvoir ajouter des genres (non prioritaire)
-// pouvoir ajouter des films (attention, à la fin car il faut les relier dans le bdd)

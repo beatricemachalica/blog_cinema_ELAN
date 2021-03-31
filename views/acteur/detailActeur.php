@@ -3,7 +3,6 @@
 ob_start();
 
 $detailActeur = $acteur->fetch();
-// SELECT id_acteur, concat(prenom, ' ', nom) as nomActeur, sexe, dateNaissance
 ?>
 
 <div class="row">

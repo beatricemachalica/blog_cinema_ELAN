@@ -3,6 +3,7 @@
 ob_start();
 
 $detailReal = $realisateur->fetch();
+$detailfilmo = $filmographie->fetch();
 
 ?>
 
@@ -12,7 +13,7 @@ $detailReal = $realisateur->fetch();
   <p class="col-7 text-justify">
     Sexe : <?= $detailReal["sexe"]; ?> <br>
     Date de naissance : <?= $detailReal["dateNaissance"]; ?> <br>
-    Filmographie : <?= $detailReal["titre"]; ?> <br>
+    Filmographie : <?= $detailfilmo["titre"]; ?> <br>
   </p>
 </div>
 

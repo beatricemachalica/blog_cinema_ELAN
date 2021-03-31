@@ -13,6 +13,7 @@ ob_start();
     <tr>
       <th>Nom</th>
       <th>Sexe</th>
+      <th>Age</th>
       <th>Date de naissance</th>
     </tr>
   </thead>
@@ -21,6 +22,7 @@ ob_start();
     while ($acteur = $acteurs->fetch()) {
       echo "<tr><td><a style='color:white' href='index.php?action=detailActeur&id=" . $acteur['id_acteur'] . "'>" . $acteur['nomActeur'] . "</a></td>";
       echo "<td>" . $acteur["sexe"] . "</td>";
+      echo "<td>" . $acteur["age"] . " ans </td>";
       echo "<td>" . $acteur["dateNaissance"] . "</td></tr>";
     }
     ?>

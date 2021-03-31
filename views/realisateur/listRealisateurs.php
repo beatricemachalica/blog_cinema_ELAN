@@ -13,6 +13,7 @@ ob_start();
     <tr>
       <th>Les réalisateurs</th>
       <th>Sexe</th>
+      <th>Age</th>
       <th>Date de naissance</th>
     </tr>
   </thead>
@@ -22,15 +23,16 @@ ob_start();
       echo "<tr><td><a style='color:white' href='index.php?action=detailReal&id=" .
         $realisateur['id_realisateur'] . "'>" . $realisateur['identiteRealisateur'] . "</a></td>";
       echo "<td>" . $realisateur["sexe"] . "</td>";
+      echo "<td>" . $realisateur["age"] . " ans </td>";
       echo "<td>" . $realisateur["dateNaissance"] . "</td>";
-      echo "<td><a class='badge badge-danger' href='index.php?action=effacerRealisateur&id=" . $realisateur['id_realisateur'] . "'>x</a></td></tr>";
+      echo "<td><a class='badge badge-light' href='index.php?action=modifierRealForm&id=" . $realisateur['id_realisateur'] . "'><i class='fas fa-pen'></i></a></td>";
+      echo "<td><a class='badge badge-danger' href='index.php?action=effacerRealisateur&id=" . $realisateur['id_realisateur'] . "'><i class='fas fa-times'></i></a></td></tr>";
     }
     ?>
   </tbody>
 </table>
 <a class="btn btn-primary" href="index.php?action=ajouterRealForm">Ajouter un réalisateur</a>
-<!-- autre possibilité : un bouton pour supprimer un réalisateur -->
-<!-- <a class="btn btn-danger" href="#">Effacer un réalisateur</a> -->
+<!-- ajouter une fonctionnalité pour edit -->
 <?php
 
 $realisateurs->closeCursor();

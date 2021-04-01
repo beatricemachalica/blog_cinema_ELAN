@@ -29,7 +29,7 @@ $infoActeur = $acteur->fetch();
     <div class="form-group">
       <label for="photo acteur">Photo de l'acteur</label>
       <input type="text" class="form-control" id="photo" name="photo_acteur" placeholder="URL ici">
-      <small id="dateNaissanceHelp" class="form-text text-muted">Ajoutez le lien de l'image de l'acteur.</small>
+      <small id="imgHelp" class="form-text text-muted">Ajoutez le lien de l'image de l'acteur.</small>
     </div>
     <div class="form-check">
       <input type="checkbox" class="form-check-input" id="exampleCheck1">

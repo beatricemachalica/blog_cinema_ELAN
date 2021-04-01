@@ -71,6 +71,9 @@ if (isset($_GET['action'])) {
     case "modifierActeur":
       $ctrlActeur->editActeur($id, $_POST);
       break;
+    case "ajouterFilmFormulaire":
+      $ctrlFilm->addFilmForm();
+      break;
   }
 } else {
   $ctrlAccueil->pageAccueil();

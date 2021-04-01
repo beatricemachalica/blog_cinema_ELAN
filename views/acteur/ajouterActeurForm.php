@@ -4,7 +4,7 @@ ob_start();
 
 ?>
 
-<h2>Ajouter un acteur</h2>
+<h2 class="text-center">Ajouter un acteur</h2>
 
 <div class="content">
   <form action="./index.php?action=ajouterActeur" method="POST">

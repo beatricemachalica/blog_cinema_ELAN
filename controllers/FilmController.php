@@ -5,6 +5,7 @@ require_once "bdd/DAO.php";
 class FilmController
 {
 
+  // méthode pour afficher la liste des films
   public function filmsList()
   {
     $dao = new DAO();
@@ -25,6 +26,7 @@ class FilmController
     // pour avoir seulement l'année pour la dateSortie : DATE_FORMAT(f.dateSortie, ('%Y')) AS dateSortie
   }
 
+  // méthode pour récupérer les informations d'un film et d'un casting via l'id
   public function findOneById($id)
   {
     $dao = new DAO();
@@ -49,5 +51,17 @@ class FilmController
     $castingFilm = $dao->executerRequete($sql2, [":id" => $id]);
 
     require "views/film/detailFilm.php";
+  }
+
+  public function addFilmForm()
+  {
+    // on récupère les réalisateurs pour le formulaire
+
+    $dao = new DAO();
+    $sql = "SELECT id_realisateur, concat(prenom, ' ', nom) AS identiteRealisateur, sexe, dateNaissance
+    FROM realisateur";
+    $realisateurs = $dao->executerRequete($sql);
+
+    require "views/film/newFilmForm.php";
   }
 }

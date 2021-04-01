@@ -32,6 +32,7 @@ ob_start();
     ?>
   </tbody>
 </table>
+<a class="btn btn-primary" href="index.php?action=ajouterFilmFormulaire">Ajouter un film</a>
 <?php
 
 // On utilise closeCursor() pour éviter les erreurs s'il y a de multiples requêtes sur une même page

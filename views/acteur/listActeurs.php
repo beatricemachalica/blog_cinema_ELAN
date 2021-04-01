@@ -23,11 +23,14 @@ ob_start();
       echo "<tr><td><a style='color:white' href='index.php?action=detailActeur&id=" . $acteur['id_acteur'] . "'>" . $acteur['nomActeur'] . "</a></td>";
       echo "<td>" . $acteur["sexe"] . "</td>";
       echo "<td>" . $acteur["age"] . " ans </td>";
-      echo "<td>" . $acteur["dateNaissance"] . "</td></tr>";
+      echo "<td>" . $acteur["dateNaissance"] . "</td>";
+      echo "<td><a class='badge badge-light' href='index.php?action=modifierActeurForm&id=" . $acteur['id_acteur'] . "'><i class='fas fa-pen'></i></a></td>";
+      echo "<td><a class='badge badge-danger' href='index.php?action=effacerActeur&id=" . $acteur['id_acteur'] . "'><i class='fas fa-times'></i></a></td></tr>";
     }
     ?>
   </tbody>
 </table>
+<a class="btn btn-primary" href="index.php?action=ajouterActeurFormulaire">Ajouter un acteur</a>
 <?php
 
 $acteurs->closeCursor();

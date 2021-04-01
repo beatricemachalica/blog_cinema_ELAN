@@ -85,8 +85,8 @@ class RealController
   {
     $nom_realisateeur = filter_var($array["nom_realisateur"], FILTER_SANITIZE_STRING);
     $prenom_realisateeur = filter_var($array["prenom_realisateur"], FILTER_SANITIZE_STRING);
-    $sexe = filter_var($array["sexe"], FILTER_SANITIZE_STRING);
-    $dateNaissance = filter_var($array["dateNaissance"], FILTER_SANITIZE_STRING);
+    $sexe = filter_var($array["sexe_realisateur"], FILTER_SANITIZE_STRING);
+    $dateNaissance = filter_var($array["dateNaissance_realisateur"], FILTER_SANITIZE_STRING);
 
     $dao = new DAO();
     $sql = "UPDATE realisateur
@@ -96,11 +96,11 @@ class RealController
     dateNaissance = :dateNaissance
     WHERE id_realisateur = :id";
     $dao->executerRequete($sql, [
-      ":id" => $id,
-      ":nom" => $nom_realisateeur,
-      ":prenom" => $prenom_realisateeur,
-      ":sexe" => $sexe,
-      ":dateNaissance" => $dateNaissance
+      ':id' => $id,
+      ':nom' => $nom_realisateeur,
+      ':prenom' => $prenom_realisateeur,
+      ':sexe' => $sexe,
+      ':dateNaissance' => $dateNaissance
     ]);
     header("Location:index.php?action=listRealisateurs");
   }

@@ -32,7 +32,6 @@ ob_start();
   </tbody>
 </table>
 <a class="btn btn-primary" href="index.php?action=ajouterRealForm">Ajouter un réalisateur</a>
-<!-- ajouter une fonctionnalité pour edit -->
 <?php
 
 $realisateurs->closeCursor();

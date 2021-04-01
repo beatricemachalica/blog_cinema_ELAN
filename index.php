@@ -17,7 +17,7 @@ if (isset($_GET['action'])) {
   // $id = ($_GET['id']);
   // pour la sécurité (faille XSS par exemple), 
   // on rajoute un filter_input puisque l'id se trouve dans l'URL 
-  // (un utilisateur malveillant peut accéder à l'URL et injecter ce qu'il veut)
+  // or, un utilisateur malveillant peut accéder à l'URL et injecter ce qu'il veut (comme du script)
 
   switch ($_GET['action']) {
     case "accueil":
@@ -51,10 +51,25 @@ if (isset($_GET['action'])) {
       $ctrlReal->modifierRealisateurForm($id);
       break;
     case "modifierRealisateur":
-      $ctrlReal->editRealisateur($_POST, $id);
+      $ctrlReal->editRealisateur($id, $_POST);
       break;
     case "detailReal":
       $ctrlReal->findOneById($id);
+      break;
+    case "ajouterActeurFormulaire":
+      $ctrlActeur->addActeurForm();
+      break;
+    case "ajouterActeur":
+      $ctrlActeur->addActeur($_POST);
+      break;
+    case "effacerActeur":
+      $ctrlActeur->deleteOneById($id);
+      break;
+    case "modifierActeurForm":
+      $ctrlActeur->modifActeurForm($id);
+      break;
+    case "modifierActeur":
+      $ctrlActeur->editActeur($id, $_POST);
       break;
   }
 } else {

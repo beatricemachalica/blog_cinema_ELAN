@@ -45,14 +45,12 @@
           <li class="nav-item">
             <a class="nav-link" href="index.php?action=listRealisateurs">Les réalisateurs</a>
           </li>
-          <li class="nav-item">
-            <!-- créer une connexion à un compte utilisateur -->
+          <!-- <li class="nav-item">
             <a class="nav-link" href="#">Connexion</a>
           </li>
           <li class="nav-item">
-            <!-- créer la fonctionnalité création de compte utilisateur -->
             <a class="nav-link" href="#">Créer un compte</a>
-          </li>
+          </li> -->
         </ul>
       </div>
     </div>

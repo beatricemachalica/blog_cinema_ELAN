@@ -1,6 +1,6 @@
 # Petit projet de création d'un site avec ELAN :
 
-## Création d'un petit blog à l'aide de PHP 7, MySQL et Bootstrap
+## Création d'un blog cinéma à l'aide de PHP 7, MySQL et Bootstrap
 
 Nous avons relié les différentes vues, controleurs ainsi que la bdd.
 Exercice de templating et de design pattern.
@@ -9,15 +9,14 @@ c'est pour cela que nous avons pu nous faire la main sur Bootstrap lors de la r�
 
 ### Fonctionnalités :
 
-- faire apparaitre les listes des films, acteurs et réalisateurs à l'aide d'une BDD ;
+- faire apparaitre les listes des films, des acteurs et des réalisateurs à l'aide d'une BDD ;
 - ajouter un réalisateur à l'aide d'un formulaire en respectant les normes de sécurité ;
 - modifier les informations d'un réalisateur ;
 - supprimer un réalisateurs ;
-- ajouter un acteur à l'aide d'un formulaire en respectant les normes de sécurité (en cours de réalisation) ;
-- ajouter un genre de film à l'aide d'un formulaire en respectant les normes de sécurité (en cours de réalisation) ;
+- ajouter un acteur à l'aide d'un formulaire en respectant les normes de sécurité ;
+- supprimer un acteur ;
+- modifier les informations d'un acteur ;
 - ajouter un film à l'aide d'un formulaire en respectant les normes de sécurité (en cours de réalisation) ;
-- création d'un compte utilisateur à l'aide d'un formulaire en respectant les normes de sécurité (en cours de réalisation) ;
-- connexion sécurisée à un compte utilisateur (en cours de réalisation) ;
 
 ### Sécurité :
 
@@ -25,7 +24,7 @@ c'est pour cela que nous avons pu nous faire la main sur Bootstrap lors de la r�
 - protection contre les failles XSS
 - protection contre les injections SQL
 
-Formateurs : Stéphane SMAIL and Gilles MUESS.
+Formateurs : Stéphane SMAIL et Gilles MUESS.
 
 Information sur le theme utilisé de Bootstrap ci-desous :
 

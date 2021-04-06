@@ -44,33 +44,46 @@ ob_start();
 
     <div class="form-group">
       <label for="photo film">Affiche du film</label>
-      <input type="text" class="form-control" id="affiche" name="affiche_film" placeholder="collez l'adresse URL ici">
-      <small id="imgHelp" class="form-text text-muted">Ajoutez le lien de l'affiche du film ci-dessus.</small>
+      <input type="text" class="form-control" id="affiche" name="affiche_film" placeholder="https://image.jeuxvideo.com/medias-md/146965/1469647081-8887-card.jpg">
+      <small id="imgHelp" class="form-text text-muted">Ajoutez le lien (relatif ou absolu) de l'affiche du film ci-dessus.</small>
     </div>
 
     <div class="form-group">
       <h4 class="text-center">Le réalisateur</h4>
       <p><i class="fas fa-info-circle" style="color:cornflowerblue;"></i> Sélectionnez un réalisateur déjà existants <strong>ou</strong> ajoutez un réalisateur.</p>
-      <select class="form-control" name="realisateur_film" id="exampleFormControlSelect1">
+      <select class="form-control" name="realisateur_film" id="selectReal">
         <?php
         while ($realisateur = $realisateurs->fetch()) {
-          echo "<option>" . $realisateur["identiteRealisateur"] . "</option>";
+          echo "<option value = '" . $realisateur['id_realisateur'] . "' >"
+            . $realisateur["identiteRealisateur"] . "</option>";
         }
-        // comment ajouter l'id du realisateur dans le formulaire ?
-        // pour pouvoir l'ajouter dans la bdd ?
+        // vérifier si data c'est en JS ou PHP ?
         ?>
       </select>
+
       <div class="text-center">
         <p>Ajouter un réalisateur ci-dessous</p>
         <a href="#" id="loadMore"><button type="button" class="btn btn-secondary">Formulaire d'inscription <i class="fas fa-arrow-down"></i></button></a>
       </div>
     </div>
 
-    <h4 class="text-center">Le casting</h4>
-    <p><i class="fas fa-info-circle" style="color:cornflowerblue;"></i> Sélectionnez les acteurs déjà existants <strong>ou</strong> ajoutez les ainsi que leurs rôles.</p>
+    <div class="form-group">
+      <h4 class="text-center">Le casting</h4>
+      <p><i class="fas fa-info-circle" style="color:cornflowerblue;"></i> Sélectionnez les acteurs déjà existants du casting <strong>ou</strong> ajoutez des nouveaux acteurs ainsi que leurs rôles.</p>
+      <select class="form-control" name="acteurs_film" id="selectActeurs">
+        <?php //ajouter la sélection des acteurs ici avec un while $acteur = $acteurs->fetch()
+        // echo "<option data-idActeur="$acteur[]"> nom de l'acteur . </option>"
+        ?>
+      </select>
+
+      <div class="text-center">
+        <p>Ajouter les acteurs ci-dessous</p>
+        <a href="#" id="loadMore"><button type="button" class="btn btn-secondary">Formulaire d'inscription <i class="fas fa-arrow-down"></i></button></a>
+      </div>
+    </div>
 
     <div>
-      <button type="submit" class="btn btn-primary">Ajouter</button>
+      <button type="submit" class="btn btn-primary">Ajouter le film</button>
     </div>
 
   </form>

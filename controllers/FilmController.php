@@ -53,6 +53,75 @@ class FilmController
     require "views/film/detailFilm.php";
   }
 
+  // méthode pour afficher la liste des genres
+  public function listGenres()
+  {
+    $dao = new DAO();
+    $sql = "SELECT libelle, id_genre AS idGenre
+    FROM genre";
+    $genres = $dao->executerRequete($sql);
+    require "views/genre/listGenres.php";
+  }
+
+  // méthode pour ajouter un genre de film
+  public function addGenreForm()
+  {
+    require "views/genre/ajouterGenreForm.php";
+  }
+
+  // méthode pour ajouter un genre à partir du formulaire de "ajouterGenreForm.php"
+  public function addGenre($array)
+  {
+
+    $dao = new DAO();
+    $sql = "INSERT INTO genre(libelle)
+    VALUES (:libelle)";
+    $libelleGenre = filter_var($array["libelle_genre"], FILTER_SANITIZE_STRING);
+
+    $ajout = $dao->executerRequete($sql, [
+      ':libelle' => $libelleGenre
+    ]);
+    header("Location:index.php?action=listGenres");
+  }
+
+  // méthode pour supprimer un genre de film
+  public function deleteOneGenreById($id)
+  {
+    $dao = new DAO();
+    $sql = "DELETE FROM genre
+    WHERE id_genre = :id";
+    $genre = $dao->executerRequete($sql, [":id" => $id]);
+    require "views/genre/pageGenreDeleted.php";
+  }
+
+  // méthode pour afficher un formulaire pour modifier un genre
+  public function modifGenreForm($id)
+  {
+    $dao = new DAO();
+    $sql = "SELECT libelle, id_genre AS idGenre
+    FROM genre
+    WHERE id_genre = :id";
+    $genre = $dao->executerRequete($sql, [":id" => $id]);
+    require "views/genre/editGenreForm.php";
+  }
+
+  // méthode pour traiter les données du formulaire de "editGenreForm.php"
+  public function editGenre($id, $array)
+  {
+    $libelleGenre = filter_var($array["libelle_genre"], FILTER_SANITIZE_STRING);
+
+    $dao = new DAO();
+    $sql = "UPDATE genre
+    SET libelle = :libelle
+    WHERE id_genre = :id";
+    $dao->executerRequete($sql, [
+      ':id' => $id,
+      ':libelle' => $libelleGenre
+    ]);
+    header("Location:index.php?action=listGenres");
+  }
+
+  // méthode pour ajouter un film
   public function addFilmForm()
   {
     // on récupère les réalisateurs pour le formulaire
@@ -61,6 +130,9 @@ class FilmController
     $sql = "SELECT id_realisateur, concat(prenom, ' ', nom) AS identiteRealisateur, sexe, dateNaissance
     FROM realisateur";
     $realisateurs = $dao->executerRequete($sql);
+
+    // on récupère les acteurs pour le formulaire
+
 
     require "views/film/newFilmForm.php";
   }

@@ -1,7 +1,7 @@
 <?php
 
 ob_start();
-$director = $realisateur->fetch();
+$director = $realisateur->fetch(PDO::FETCH_ASSOC);
 
 ?>
 

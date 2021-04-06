@@ -20,7 +20,7 @@ $detailActeur = $acteur->fetch();
       <li><?= $detailActeur["titre"]; ?></li>
     </ul>
   </div>
-  <figure class=" col-4"><img style="width: 100%;" src="<?= $detailActeur['imgPath']; ?>" alt="photo de l'acteur"></figure>
+  <figure class="col-4"><img style="width: 100%;" src="<?= $detailActeur['imgPath']; ?>" alt="photo de l'acteur"></figure>
 </div>
 <img src="./img/acteurs/" alt="">
 

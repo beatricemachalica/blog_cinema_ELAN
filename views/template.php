@@ -45,12 +45,9 @@
           <li class="nav-item">
             <a class="nav-link" href="index.php?action=listRealisateurs">Les réalisateurs</a>
           </li>
-          <!-- <li class="nav-item">
-            <a class="nav-link" href="#">Connexion</a>
-          </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Créer un compte</a>
-          </li> -->
+            <a class="nav-link" href="index.php?action=listGenres">Les genres</a>
+          </li>
         </ul>
       </div>
     </div>

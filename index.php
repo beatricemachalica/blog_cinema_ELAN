@@ -71,6 +71,23 @@ if (isset($_GET['action'])) {
     case "modifierActeur":
       $ctrlActeur->editActeur($id, $_POST);
       break;
+    case "listGenres":
+      $ctrlFilm->listGenres();
+      break;
+    case "ajouterGenreFormulaire":
+      $ctrlFilm->addGenreForm();
+      break;
+    case "ajouterGenre":
+      $ctrlFilm->addGenre($_POST);
+      break;
+    case "effacerGenre":
+      $ctrlFilm->deleteOneGenreById($id);
+      break;
+    case "modifierGenreForm":
+      $ctrlFilm->modifGenreForm($id);
+      break;
+    case "modifierGenre":
+      $ctrlFilm->editGenre($id, $_POST);
     case "ajouterFilmFormulaire":
       $ctrlFilm->addFilmForm();
       break;

@@ -16,6 +16,7 @@ c'est pour cela que nous avons pu nous faire la main sur Bootstrap lors de la r�
 - ajouter un acteur à l'aide d'un formulaire en respectant les normes de sécurité ;
 - supprimer un acteur ;
 - modifier les informations d'un acteur ;
+- ajouter, modifier, supprimer un genre de film ;
 - ajouter un film à l'aide d'un formulaire en respectant les normes de sécurité (en cours de réalisation) ;
 
 ### Sécurité :

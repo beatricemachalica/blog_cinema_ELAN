@@ -145,6 +145,9 @@ class FilmController
   {
     $dao = new DAO();
 
+    $sql1 = "INSERT INTO film(titre, dateSortie, resume, noteFilm, imgPath, duree, id_realisateur)
+    VALUES (:titre, :dateSortie, :resume, :noteFilm, :imgPath, :duree, :idRealisateur)";
+
     $titre = filter_var($array['titre_film'], FILTER_SANITIZE_STRING);
     $dateSortie = filter_var($array['dateSortie_film'], FILTER_SANITIZE_STRING);
     $resume = filter_var($array['resume_film'], FILTER_SANITIZE_STRING);
@@ -153,10 +156,7 @@ class FilmController
     $duree = filter_var($array['duree_film'], FILTER_SANITIZE_STRING);
     $realisateur = filter_var($array['realisateur_film'], FILTER_SANITIZE_STRING);
 
-    $sql = "INSERT INTO film(titre, dateSortie, resume, noteFilm, imgPath, duree, id_realisateur)
-    VALUES (:titre, :dateSortie, :resume, :noteFilm, :imgPath, :duree, :idRealisateur)";
-
-    $ajout = $dao->executerRequete($sql, [
+    $ajout = $dao->executerRequete($sql1, [
       ":titre" => $titre,
       ":dateSortie" => $dateSortie,
       ":resume" => $resume,
@@ -166,19 +166,16 @@ class FilmController
       ":idRealisateur" => $realisateur
     ]);
 
-    // puis on fait une seconde requête pour s'occuper du genre du film
+    // puis on fait une seconde requête pour le genre du film
     $lastId = $dao->getBdd()->lastInsertId();
 
     $sql2 = "INSERT INTO avoir(id_genre, id_film) 
     VALUES (:idGenre, :idFilm)";
 
-    $genre = filter_var_array($array['genre_film'], FILTER_SANITIZE_STRING);
+    $genre_film = filter_var_array($array['genref'], FILTER_SANITIZE_STRING);
 
-    foreach ($genre as $valueGenre) {
-      $ajoutGenre = $dao->executerRequete($sql2, [
-        ":idGenre" => $valueGenre,
-        ":idFilm" => $lastId
-      ]);
+    foreach ($genre_film as $valueGenre) {
+      $ajoutGenre = $dao->executerRequete($sql2, [":idGenre" => $valueGenre, ":idFilm" => $lastId]);
     }
 
     require "views/film/nouveauFilmAjoute.php";
@@ -188,6 +185,7 @@ class FilmController
   public function deleteFilmById($id)
   {
     $dao = new DAO();
+
     // on garde le titre pour l'afficher plus tard
     $sql0 = "SELECT id_film, titre 
     FROM film
@@ -197,18 +195,18 @@ class FilmController
     $titleDeletedMovie = $deletedMovie['titre'];
 
     // on doit d'abord effacer le casting
-    $sql1 = "DELETE FROM genre
-    WHERE id_genre = :id";
-    $deleteCasting = $dao->executerRequete($sql1, [":id" => $id]);
-
+    $sql1 = "DELETE FROM casting
+    WHERE id_film = :id";
     // puis, on doit effacer les informations dans la table associative "avoir"
-    $sql2 = "DELETE FROM genre
-    WHERE id_genre = :id";
-    $deleteAvoir = $dao->executerRequete($sql2, [":id" => $id]);
-
+    $sql2 = "DELETE FROM avoir
+    WHERE id_film = :id";
     // enfin, on va effacer le film (à la fin car avec les clés étrangères on risque d'avoir des problèmes)
-    $sql3 = "DELETE FROM genre
-    WHERE id_genre = :id";
+    $sql3 = "DELETE FROM film
+    WHERE id_film = :id";
+
+    // c'est important d'effacer d'abord les "traces"
+    $deleteCasting = $dao->executerRequete($sql1, [":id" => $id]);
+    $deleteAvoir = $dao->executerRequete($sql2, [":id" => $id]);
     $deletefilm = $dao->executerRequete($sql3, [":id" => $id]);
 
     require "views/film/filmEfface.php";
@@ -218,7 +216,7 @@ class FilmController
   public function modifFilmForm($id)
   {
     $dao = new DAO();
-    $sql1 = ("SELECT id_film AS 'idFilm', titre, dateSortie, resume, noteFilm, imgPath, duree, id_realisateur AS 'idReal'
+    $sql1 = ("SELECT id_film AS 'idFilm', titre, dateSortie, resume, noteFilm, imgPath, duree, id_realisateur
     FROM film
     WHERE id_film = :id");
     $edit1 = $dao->executerRequete($sql1, [":id" => $id]);
@@ -229,7 +227,7 @@ class FilmController
     $sql3 = ("SELECT id_genre, libelle FROM genre");
     $edit3 = $dao->executerRequete($sql3);
 
-    $sql4 = ("SELECT DISTINCT concat(prenom,' ', nom) AS 'realNom', id_realisateur AS 'idReal' FROM realisateur");
+    $sql4 = ("SELECT DISTINCT concat(prenom,' ', nom) AS realNom, id_realisateur FROM realisateur");
     $edit4 = $dao->executerRequete($sql4);
 
     require "views/film/modifierUnFilmFormulaire.php";
@@ -247,13 +245,14 @@ class FilmController
     $affiche = filter_var($array['affiche_film'], FILTER_SANITIZE_STRING);
     $duree = filter_var($array['duree_film'], FILTER_SANITIZE_STRING);
     $realisateur = filter_var($array['realisateur_film'], FILTER_SANITIZE_STRING);
+    $genre_film = filter_var_array($array['genref'], FILTER_SANITIZE_STRING);
 
     $sql = "UPDATE film
     SET titre = :titre,
     dateSortie = :dateSortie,
     resume = :resume,
     noteFilm = :noteFilm,
-    imgPaht = :imgPath,
+    imgPath = :imgPath,
     duree = :duree,
     id_realisateur = :id_realisateur
     WHERE id_film = :id";
@@ -269,7 +268,21 @@ class FilmController
       ':id_realisateur' => $realisateur
     ]);
 
-    header("Location:index.php?action=listGenres");
+    $sql2 = "DELETE FROM avoir 
+    WHERE id_film = :id";
+    $delete = $dao->executerRequete($sql2, [":id" => $id]);
+    // on supprime tous les genres du film en question pour les remettre ensuite
+    // ceci est obligatoire car on travail sur une table associative
+
+    $sql3 = "INSERT INTO avoir(id_genre, id_film)
+    VALUES (:idGenre, :idFilm)";
+
+    foreach ($genre_film as $genreActuel1) {
+      $genreActuel2 = filter_var($genreActuel1, FILTER_SANITIZE_STRING);
+      $addGenre = $dao->executerRequete($sql3, [":idGenre" => $genreActuel2, ":idFilm" => $id]);
+    }
+
+    header("Location:index.php");
   }
 
   // faire une méthode pour ajouter des castings dans le détail du film (acteurs + rôles)

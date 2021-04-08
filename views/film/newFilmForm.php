@@ -1,6 +1,6 @@
 <?php
 ob_start();
-// permet de stocker (bufférisation) en mémoire tampon
+// cette fonction permet de stocker (bufférisation) en mémoire tampon
 ?>
 
 <h2 class="text-center">Ajouter un film</h2>
@@ -30,11 +30,11 @@ ob_start();
     <div class="form-group">
       <h4 class="text-center">Le genre du film</h4>
       <p>
-        <i class="fas fa-info-circle" style="color:cornflowerblue;">
-        </i> Sélectionnez les genres déjà existants
+        <i class="fas fa-info-circle" style="color:cornflowerblue;"></i> Sélectionnez les genres déjà existants
         <strong>ou</strong> ajoutez des nouveaux genres de films.
       </p>
-      <select class="form-control" name="genre_film" id="genre_film" multiple>
+      <!-- les crochets de genref sont importants car on attend un tableau avec éventuellement plusieurs genres -->
+      <select class="form-control" name="genref[]" id="genre_film" multiple>
         <?php
         while ($genre = $genres->fetch()) {
           echo "<option value = " . $genre['idGenre'] . ">" . ucfirst($genre['libelle']) . "</option>";

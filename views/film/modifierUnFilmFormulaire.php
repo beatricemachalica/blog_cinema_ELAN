@@ -1,24 +1,32 @@
 <?php
 ob_start();
 // permet de stocker (bufférisation) en mémoire tampon
+
+$editInfo = $edit1->fetch();
+
 ?>
 
-<h2 class="text-center">Ajouter un film</h2>
+<h2 class="text-center">Modifier un film</h2>
 
 <div class="content">
 
-  <form action="./index.php?action=ajouterFilm" method="POST">
+  <form action="./index.php?action=modifierFilm&id=<?= $editInfo['idFilm'] ?>" method="POST">
 
     <div class="form-group">
       <h4 class="text-center">Le réalisateur</h4>
       <p><i class="fas fa-info-circle" style="color:cornflowerblue;"></i> Sélectionnez un réalisateur déjà existants <strong>ou</strong> ajoutez un réalisateur.</p>
       <select class="form-control" name="realisateur_film" id="selectReal">
+
         <?php
-        while ($realisateur = $realisateurs->fetch()) {
-          echo "<option value = " . $realisateur['id_realisateur'] . " >"
-            . $realisateur["identiteRealisateur"] . "</option>";
+        while ($nomRealisateur = $edit4->fetch()) {
+          echo "<option value = " . $nomRealisateur['idReal'];
+          if ($nomRealisateur['idReal'] == $editInfo['idReal']) {
+            echo " selected";
+          }
+          echo ">" . ucfirst($nomRealisateur['realNom']) . "</option>";
         }
         ?>
+
       </select>
 
       <div class="text-center">
@@ -26,6 +34,14 @@ ob_start();
         </p>
       </div>
     </div>
+
+    <?php
+    // on va créer un tableau vide
+    $tableauGenres = array();
+    // on va push dans ce tableau les genres du film trouvés grâce à "edit2"
+    while ($findIdGenre = $edit2->fetch())
+      array_push($tableauGenres, $findIdGenre['id_genre']);
+    ?>
 
     <div class="form-group">
       <h4 class="text-center">Le genre du film</h4>
@@ -36,8 +52,12 @@ ob_start();
       </p>
       <select class="form-control" name="genre_film" id="genre_film" multiple>
         <?php
-        while ($genre = $genres->fetch()) {
-          echo "<option value = " . $genre['idGenre'] . ">" . ucfirst($genre['libelle']) . "</option>";
+        while ($nomGenre = $edit3->fetch()) {
+          echo "<option value = " . $nomGenre['idGenre'];
+          if (in_array($nomGenre['id_genre'], $tableauGenres)) {
+            echo " selected";
+          }
+          echo ">" . ucfirst($nomGenre['libelle']) . "</option>";
         }
         ?>
       </select>
@@ -52,24 +72,24 @@ ob_start();
 
     <div class="form-group">
       <label for="titre">Titre du film <span style="color: red;">*</span></label>
-      <input type="text" class="form-control" id="titre_film" name="titre_film" placeholder="Life is Strange" required>
+      <input type="text" class="form-control" id="titre_film" name="titre_film" value="<?php echo $editInfo['titre'] ?>" required>
     </div>
 
     <div class="form-group">
       <label for="dateSortie">Date de sortie</label>
-      <input type="date" class="form-control" id="dateSortie" name="dateSortie_film" placeholder="2018-01-31">
+      <input type="date" class="form-control" id="dateSortie" name="dateSortie_film" value="<?php echo $editInfo['dateSortie'] ?>">
       <small id="dateSortieHelp" class="form-text text-muted">Ajoutez la date de sortie du film au format AAAA-MM-JJ.</small>
     </div>
 
     <div class="form-group">
       <label for="duree">Durée du film</label>
-      <input type="number" class="form-control" id="duree" name="duree_film" min="0" max="600" placeholder="155">
+      <input type="number" class="form-control" id="duree" name="duree_film" min="0" max="600" value="<?php echo $editInfo['duree'] ?>">
       <small id="dureeHelp" class="form-text text-muted">Ajoutez la durée du film en minutes.</small>
     </div>
 
     <div class="form-group">
       <label for="resume">Résumé du film</label>
-      <textarea class="form-control" id="resumeFilm" rows="3" name="resume_film"></textarea>
+      <textarea class="form-control" id="resumeFilm" rows="3" name="resume_film"><?php echo $editInfo['resume'] ?></textarea>
       <small id="resumeHelp" class="form-text text-muted">Ajoutez le résumé du film ci-dessus.</small>
     </div>
 
@@ -86,7 +106,7 @@ ob_start();
 
     <div class="form-group">
       <label for="photo film">Affiche du film</label>
-      <input type="text" class="form-control" id="affiche" name="affiche_film" placeholder="https://image.jeuxvideo.com/medias-md/146965/1469647081-8887-card.jpg">
+      <input type="text" class="form-control" id="affiche" name="affiche_film" value="<?php echo $editInfo['imgPath'] ?>">
       <small id="imgHelp" class="form-text text-muted">Ajoutez le lien (relatif ou absolu) de l'affiche du film ci-dessus.</small>
     </div>
 
@@ -98,6 +118,8 @@ ob_start();
 </div>
 
 <?php
-$titreOnglet = "Ajouter un film";
+
+$edit1->closeCursor();
+$titreOnglet = "Modifier un film";
 $contenu = ob_get_clean();
 require "views/template.php";

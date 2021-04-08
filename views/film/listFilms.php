@@ -27,7 +27,9 @@ ob_start();
       echo "<td>" . $film["dateSortie"] . "</td>";
       echo "<td>" . $film["duree"] . "</td>";
       echo "<td><a style='color:white' href='index.php?action=detailReal&id=" . $film['id_realisateur'] . "'>" . $film['nom'] . "</a></td>";
-      echo "<td><a style='color:white' href='index.php?action=detailGenre&id=" . $film['genre'] . "'>" . ucfirst($film['genre']) . "</a></td></tr>";
+      echo "<td><a style='color:white' href='index.php?action=detailGenre&id=" . $film['genre'] . "'>" . ucfirst($film['genre']) . "</a></td>";
+      echo "<td><a class='badge badge-light' href='index.php?action=modifierFilmForm&id=" . $film['id_film'] . "'><i class='fas fa-pen'></i></a></td>";
+      echo "<td><a class='badge badge-danger' href='index.php?action=effacerFilm&id=" . $film['id_film'] . "'><i class='fas fa-times'></i></a></td></tr>";
     }
     ?>
   </tbody>

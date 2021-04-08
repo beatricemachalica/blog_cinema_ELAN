@@ -20,21 +20,55 @@ if (isset($_GET['action'])) {
   // or, un utilisateur malveillant peut accéder à l'URL et injecter ce qu'il veut (comme du script)
 
   switch ($_GET['action']) {
+      // case accueil
     case "accueil":
       $ctrlAccueil->pageAccueil();
       break;
+      // cases des films
     case "listFilms":
       $ctrlFilm->filmsList();
       break;
     case "detailFilm":
       $ctrlFilm->findOneById($id);
       break;
+    case "ajouterFilmFormulaire":
+      $ctrlFilm->addFilmForm();
+      break;
+    case "ajouterFilm":
+      $ctrlFilm->addFilm($_POST);
+      break;
+    case "effacerFilm":
+      $ctrlFilm->deleteFilmById($id);
+      break;
+    case "modifierFilmForm":
+      $ctrlFilm->modifFilmForm($id);
+      break;
+    case "modifierFilm":
+      $ctrlFilm->editFilm($id, $_POST);
+      break;
+      // cases des acteurs
     case "detailActeur":
       $ctrlActeur->findOneById($id);
       break;
     case "listActeurs":
       $ctrlActeur->findAll();
       break;
+    case "ajouterActeurFormulaire":
+      $ctrlActeur->addActeurForm();
+      break;
+    case "ajouterActeur":
+      $ctrlActeur->addActeur($_POST);
+      break;
+    case "effacerActeur":
+      $ctrlActeur->deleteOneById($id);
+      break;
+    case "modifierActeurForm":
+      $ctrlActeur->modifActeurForm($id);
+      break;
+    case "modifierActeur":
+      $ctrlActeur->editActeur($id, $_POST);
+      break;
+      // cases des réalisateurs
     case "listRealisateurs":
       $ctrlReal->findAll();
       break;
@@ -56,21 +90,7 @@ if (isset($_GET['action'])) {
     case "detailReal":
       $ctrlReal->findOneById($id);
       break;
-    case "ajouterActeurFormulaire":
-      $ctrlActeur->addActeurForm();
-      break;
-    case "ajouterActeur":
-      $ctrlActeur->addActeur($_POST);
-      break;
-    case "effacerActeur":
-      $ctrlActeur->deleteOneById($id);
-      break;
-    case "modifierActeurForm":
-      $ctrlActeur->modifActeurForm($id);
-      break;
-    case "modifierActeur":
-      $ctrlActeur->editActeur($id, $_POST);
-      break;
+      // cases des genres
     case "listGenres":
       $ctrlFilm->listGenres();
       break;
@@ -88,8 +108,6 @@ if (isset($_GET['action'])) {
       break;
     case "modifierGenre":
       $ctrlFilm->editGenre($id, $_POST);
-    case "ajouterFilmFormulaire":
-      $ctrlFilm->addFilmForm();
       break;
   }
 } else {

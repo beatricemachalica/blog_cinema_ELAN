@@ -78,6 +78,8 @@ class RealController
   {
     $realisateur = $this->findOneById($id, true);
     require "views/realisateur/editReal.php";
+    // ce "this" fait ref à l'objet sur lequel on travail pour utiliser une méthode
+    // une méthode qu'on a déjà créer = on évite la redondance !
   }
 
   // méthode qui va traiter les entrées du formulaire de la vue "editReal.php"

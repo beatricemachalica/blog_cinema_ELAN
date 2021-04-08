@@ -124,16 +124,166 @@ class FilmController
   // méthode pour ajouter un film
   public function addFilmForm()
   {
-    // on récupère les réalisateurs pour le formulaire
 
     $dao = new DAO();
+
+    // on récupère les réalisateurs pour le formulaire
     $sql = "SELECT id_realisateur, concat(prenom, ' ', nom) AS identiteRealisateur, sexe, dateNaissance
     FROM realisateur";
     $realisateurs = $dao->executerRequete($sql);
 
-    // on récupère les acteurs pour le formulaire
-
+    // on récupère les genres pour le formulaire
+    $sql2 = "SELECT id_genre AS idGenre, libelle
+    FROM genre";
+    $genres = $dao->executerRequete($sql2);
 
     require "views/film/newFilmForm.php";
   }
+
+  // méthode pour traiter les informations du formulaire de "newFilmForm.php"
+  public function addFilm($array)
+  {
+    $dao = new DAO();
+
+    $titre = filter_var($array['titre_film'], FILTER_SANITIZE_STRING);
+    $dateSortie = filter_var($array['dateSortie_film'], FILTER_SANITIZE_STRING);
+    $resume = filter_var($array['resume_film'], FILTER_SANITIZE_STRING);
+    $noteFilm = filter_var($array['note_film'], FILTER_SANITIZE_STRING);
+    $affiche = filter_var($array['affiche_film'], FILTER_SANITIZE_STRING);
+    $duree = filter_var($array['duree_film'], FILTER_SANITIZE_STRING);
+    $realisateur = filter_var($array['realisateur_film'], FILTER_SANITIZE_STRING);
+
+    $sql = "INSERT INTO film(titre, dateSortie, resume, noteFilm, imgPath, duree, id_realisateur)
+    VALUES (:titre, :dateSortie, :resume, :noteFilm, :imgPath, :duree, :idRealisateur)";
+
+    $ajout = $dao->executerRequete($sql, [
+      ":titre" => $titre,
+      ":dateSortie" => $dateSortie,
+      ":resume" => $resume,
+      ":noteFilm" => $noteFilm,
+      ":imgPath" => $affiche,
+      ":duree" => $duree,
+      ":idRealisateur" => $realisateur
+    ]);
+
+    // puis on fait une seconde requête pour s'occuper du genre du film
+    $lastId = $dao->getBdd()->lastInsertId();
+
+    $sql2 = "INSERT INTO avoir(id_genre, id_film) 
+    VALUES (:idGenre, :idFilm)";
+
+    $genre = filter_var_array($array['genre_film'], FILTER_SANITIZE_STRING);
+
+    foreach ($genre as $valueGenre) {
+      $ajoutGenre = $dao->executerRequete($sql2, [
+        ":idGenre" => $valueGenre,
+        ":idFilm" => $lastId
+      ]);
+    }
+
+    require "views/film/nouveauFilmAjoute.php";
+  }
+
+  // méthode pour effacer un film
+  public function deleteFilmById($id)
+  {
+    $dao = new DAO();
+    // on garde le titre pour l'afficher plus tard
+    $sql0 = "SELECT id_film, titre 
+    FROM film
+    WHERE id_film = :id";
+    $film = $dao->executerRequete($sql0, [":id" => $id]);
+    $deletedMovie = $film->fetch(PDO::FETCH_ASSOC);
+    $titleDeletedMovie = $deletedMovie['titre'];
+
+    // on doit d'abord effacer le casting
+    $sql1 = "DELETE FROM genre
+    WHERE id_genre = :id";
+    $deleteCasting = $dao->executerRequete($sql1, [":id" => $id]);
+
+    // puis, on doit effacer les informations dans la table associative "avoir"
+    $sql2 = "DELETE FROM genre
+    WHERE id_genre = :id";
+    $deleteAvoir = $dao->executerRequete($sql2, [":id" => $id]);
+
+    // enfin, on va effacer le film (à la fin car avec les clés étrangères on risque d'avoir des problèmes)
+    $sql3 = "DELETE FROM genre
+    WHERE id_genre = :id";
+    $deletefilm = $dao->executerRequete($sql3, [":id" => $id]);
+
+    require "views/film/filmEfface.php";
+  }
+
+  // méthode pour afficher un formulaire pour modifier un film
+  public function modifFilmForm($id)
+  {
+    $dao = new DAO();
+    $sql1 = ("SELECT id_film AS 'idFilm', titre, dateSortie, resume, noteFilm, imgPath, duree, id_realisateur AS 'idReal'
+    FROM film
+    WHERE id_film = :id");
+    $edit1 = $dao->executerRequete($sql1, [":id" => $id]);
+
+    $sql2 = ("SELECT id_genre, id_film FROM avoir WHERE id_film = :id");
+    $edit2 = $dao->executerRequete($sql2, [":id" => $id]);
+
+    $sql3 = ("SELECT id_genre, libelle FROM genre");
+    $edit3 = $dao->executerRequete($sql3);
+
+    $sql4 = ("SELECT DISTINCT concat(prenom,' ', nom) AS 'realNom', id_realisateur AS 'idReal' FROM realisateur");
+    $edit4 = $dao->executerRequete($sql4);
+
+    require "views/film/modifierUnFilmFormulaire.php";
+  }
+
+  // méthode pour afficher un formulaire pour modifier un film
+  public function editFilm($id, $array)
+  {
+    $dao = new DAO();
+
+    $titre = filter_var($array['titre_film'], FILTER_SANITIZE_STRING);
+    $dateSortie = filter_var($array['dateSortie_film'], FILTER_SANITIZE_STRING);
+    $resume = filter_var($array['resume_film'], FILTER_SANITIZE_STRING);
+    $noteFilm = filter_var($array['note_film'], FILTER_SANITIZE_STRING);
+    $affiche = filter_var($array['affiche_film'], FILTER_SANITIZE_STRING);
+    $duree = filter_var($array['duree_film'], FILTER_SANITIZE_STRING);
+    $realisateur = filter_var($array['realisateur_film'], FILTER_SANITIZE_STRING);
+
+    $sql = "UPDATE film
+    SET titre = :titre,
+    dateSortie = :dateSortie,
+    resume = :resume,
+    noteFilm = :noteFilm,
+    imgPaht = :imgPath,
+    duree = :duree,
+    id_realisateur = :id_realisateur
+    WHERE id_film = :id";
+
+    $dao->executerRequete($sql, [
+      ':id' => $id,
+      ':titre' => $titre,
+      ':dateSortie' => $dateSortie,
+      ':resume' => $resume,
+      ':noteFilm' => $noteFilm,
+      ':imgPath' => $affiche,
+      ':duree' => $duree,
+      ':id_realisateur' => $realisateur
+    ]);
+
+    header("Location:index.php?action=listGenres");
+  }
+
+  // faire une méthode pour ajouter des castings dans le détail du film (acteurs + rôles)
+  // méthode qui affiche un formulaire pour ajouter un casting
+  // public function addCastingForm()
+  // {
+  // on affiche un formulaire avec require
+  // }
+
+  // méthode qui va traiter les informations du formulaire pour ajouter un casting
+  // public function addCastingForm()
+  // {
+  // on recupère les informations du formulaire avec POST
+  // on doit filtrer les infos puis insert into etc.
+  // on require ou on redirige vers le détail du film
+  // }
 }

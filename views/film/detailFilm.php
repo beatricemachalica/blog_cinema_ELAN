@@ -16,9 +16,9 @@ $detailFilm = $film->fetch();
     <!-- lien réalisateur -->
     <li>Réalisateur : <?= "<a href='index.php?action=detailReal&id=" . $detailFilm['idReal'] . "'><strong>" . $detailFilm["nomReal"] ?></strong></a></li>
     <p class="text-justify">Résumé : <?= $detailFilm["resumeFilm"]; ?></p>
-    <ul style="list-style-type:none;">
+    <ul style="list-style-type:none;" class="text-center">
       <li>
-        <h3>Casting pour ce film : </h3>
+        <h3>Casting du film : </h3>
       </li>
       <?php
       while ($casting = $castingFilm->fetch()) {
@@ -27,6 +27,7 @@ $detailFilm = $film->fetch();
           $casting['identiteActeur'] . "</strong> </a> dans le role de : " . $casting['roleActeur'] . "</li>";
       }
       ?>
+      <a class="btn btn-info" style="margin: 45px;" href="index.php?action=ajouterCastingForm">Ajouter un casting</a>
     </ul>
   </ul>
   </p>

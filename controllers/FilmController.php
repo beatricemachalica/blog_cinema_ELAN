@@ -39,13 +39,13 @@ class FilmController
 
     // le casting du film
 
-    $sql2 = "SELECT f.titre AS titre, f.imgPath, CONCAT(a.prenom, ' ',a.nom) AS identiteActeur, r.role AS roleActeur, a.sexe, a.dateNaissance, a.id_acteur AS idActeur
+    $sql2 = "SELECT f.titre AS titre, f.imgPath, CONCAT(a.prenom, ' ',a.nom) AS identiteActeur, r.nomRole AS roleActeur, a.sexe, a.dateNaissance, a.id_acteur AS idActeur
     FROM film f
     INNER JOIN casting c
     ON c.id_film = f.id_film
     INNER JOIN acteur a
     ON a.id_acteur = c.id_acteur
-    INNER JOIN role r
+    INNER JOIN roles r
     ON c.id_role = r.id_role
     WHERE f.id_film = :id";
     $castingFilm = $dao->executerRequete($sql2, [":id" => $id]);
@@ -285,18 +285,52 @@ class FilmController
     header("Location:index.php");
   }
 
-  // faire une méthode pour ajouter des castings dans le détail du film (acteurs + rôles)
-  // méthode qui affiche un formulaire pour ajouter un casting
-  // public function addCastingForm()
-  // {
-  // on affiche un formulaire avec require
-  // }
+  // méthode qui affiche un formulaire pour ajouter un casting (acteurs + rôles dans un film)
+  public function addCastingForm()
+  {
+    $dao = new DAO();
+    // on récupère l'id du film
+    $sql = "SELECT id_film, titre
+    FROM film";
+    $films = $dao->executerRequete($sql);
+    // puis, on récupère les acteurs pour le formulaire
+    $sql2 = "SELECT id_acteur, concat(prenom, ' ', nom) AS identiteActeur
+    FROM acteur";
+    $acteurs = $dao->executerRequete($sql2);
+    // enfin, on propose la création d'un role à l'aide d'un simple input 
+
+    require "views/film/addCastingForm.php";
+  }
 
   // méthode qui va traiter les informations du formulaire pour ajouter un casting
-  // public function addCastingForm()
-  // {
-  // on recupère les informations du formulaire avec POST
-  // on doit filtrer les infos puis insert into etc.
-  // on require ou on redirige vers le détail du film
-  // }
+  public function addCasting($array)
+  {
+    // pour terminer, il faut lier l'id role/film/acteur dans la table casting
+    // on require ou on redirige vers le détail du film
+    $dao = new DAO();
+
+    // on recupère les informations du formulaire avec POST qui est donc un ($array)
+    $film = filter_var($array['film_casting'], FILTER_SANITIZE_STRING);
+    $acteur = filter_var($array['acteur_casting'], FILTER_SANITIZE_STRING);
+    $role = filter_var($array['role_casting'], FILTER_SANITIZE_STRING);
+    // on doit filtrer les informations pour se protéger des failles XSS.
+
+    // Insert Into, role puis seconde requête $sql2 pour le casting
+    $sql1 = "INSERT INTO roles(nomRole)
+    VALUES (:nomRole)";
+    $ajout1 = $dao->executerRequete($sql1, [
+      ':nomRole' => $role
+    ]);
+
+    $lastId = $dao->getBdd()->lastInsertId();
+    $sql2 = "INSERT INTO casting(id_acteur, id_role, id_film)
+    VALUES (:id_acteur, :id_role, :id_film)";
+    $ajout2 = $dao->executerRequete($sql2, [
+      ':id_acteur' => $acteur,
+      ':id_role' => $lastId,
+      'id_film' => $film
+    ]);
+
+    require "views/film/nouveauCastingAjoute.php";
+  }
 }

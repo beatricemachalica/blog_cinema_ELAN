@@ -20,11 +20,11 @@ if (isset($_GET['action'])) {
   // or, un utilisateur malveillant peut accéder à l'URL et injecter ce qu'il veut (comme du script)
 
   switch ($_GET['action']) {
-      // case accueil
+      // case accueil ci-dessous
     case "accueil":
       $ctrlAccueil->pageAccueil();
       break;
-      // cases des films
+      // cases des films ci-dessous
     case "listFilms":
       $ctrlFilm->filmsList();
       break;
@@ -46,7 +46,14 @@ if (isset($_GET['action'])) {
     case "modifierFilm":
       $ctrlFilm->editFilm($id, $_POST);
       break;
-      // cases des acteurs
+      // cases casting ci-dessous
+    case "ajouterCastingForm":
+      $ctrlFilm->addCastingForm();
+      break;
+    case "ajouterCasting":
+      $ctrlFilm->addCasting($_POST);
+      break;
+      // cases des acteurs ci-dessous
     case "detailActeur":
       $ctrlActeur->findOneById($id);
       break;
@@ -68,7 +75,7 @@ if (isset($_GET['action'])) {
     case "modifierActeur":
       $ctrlActeur->editActeur($id, $_POST);
       break;
-      // cases des réalisateurs
+      // cases des réalisateurs ci-dessous
     case "listRealisateurs":
       $ctrlReal->findAll();
       break;
@@ -90,7 +97,7 @@ if (isset($_GET['action'])) {
     case "detailReal":
       $ctrlReal->findOneById($id);
       break;
-      // cases des genres
+      // cases des genres ci-dessous
     case "listGenres":
       $ctrlFilm->listGenres();
       break;

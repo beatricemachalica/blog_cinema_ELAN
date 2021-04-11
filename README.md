@@ -17,6 +17,7 @@ c'est pour cela que nous avons pu nous faire la main sur Bootstrap lors de la r�
 - supprimer un acteur ;
 - modifier les informations d'un acteur ;
 - ajouter, modifier, supprimer un genre de film ;
+- ajouter un casting (un acteur et son rôle) dans le détail d'un film (en respectant les normes de sécurité) ;
 - ajouter un film à l'aide d'un formulaire en respectant les normes de sécurité (en cours de réalisation) ;
 
 ### Sécurité :
